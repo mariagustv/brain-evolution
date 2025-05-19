@@ -1,10 +1,8 @@
-## R version 4.4.2
-## December 2024
-## Ana Cristina R. Gomes
 
+## Author: Ana Cristina R. Gomes, December 2024, (R version 4.4.2)
+# Modified by Maria Gustavsson, May 2025, (R version 4.4.3)
 
-setwd("/Users/mariagustavsson/Documents/Master thesis/data analysis")
-
+###### Computing model statistics and plots ##########
 
 #### IMPORT PHYLOGENY AND INDIVIDUALS DATA ####
 
@@ -14,7 +12,7 @@ spp_match <- read.csv(file = "abb_table.csv", header=F, sep = ";")  #import tabl
 ## PHYLOGENY
 
 # import and check phylogeny
-library(ape) # v5.8
+library(ape)
 
 #import phylogenetic tree
 poecilids_tree_complete<-read.nexus("Poeciliidae.nex")
@@ -784,88 +782,6 @@ ggplot(brain_dataset_logscale_sex, aes(x = Weight, y = brain_DM_resid, color = s
   ) + ggtitle("Dorsal medulla (DM)")
 
 
-
-
-
-
-
-
-#Maybe not needed?
-#### CORRELATION BETWEEN REGIONS ####
-head(brain_dataset)
-
-# all individuals
-datanalyses_meanregion<-brain_dataset[,colnames(brain_dataset) %in% c("TL","OT","CB","HP",
-                                                                      "OB","DM","spp_phylo")]
-datanalyses_meanregion<-datanalyses_meanregion[complete.cases(datanalyses_meanregion), ]
-str(datanalyses_meanregion)
-
-
-library(phytools)
-obj<-phyl.vcv(datanalyses_meanregion,vcv(poecilids_tree_prunned),1)
-obj$R
-## correlation between x & y
-r.xy<-cov2cor(obj$R)
-## t-statistic & P-value
-t.xy<-r.xy*sqrt((Ntip(poecilids_tree_prunned)-2)/(1-r.xy^2))
-P.xy<-2*pt(abs(t.xy),df=Ntip(poecilids_tree_prunned)-2,lower.tail=F)
-P.xy
-
-
-# plot the correlation results
-library(corrplot) #version 0.92
-
-corrplot(r.xy, method= "shade", type="upper",
-         outline=T, pch.col="black", diag=F, tl.col = "grey40", tl.srt=60, addCoef.col = 'white')
-title(main = "ALL Phylo control")
-
-
-# repeat the same separating males and females
-# males
-datanalyses_meanregionM<-brain_dataset[brain_dataset$sex=="M", colnames(brain_dataset) %in% c("TL","OT","CB","HP",
-                                                                      "OB","DM","spp_phylo")]
-datanalyses_meanregionM<-datanalyses_meanregionM[complete.cases(datanalyses_meanregionM), ]
-str(datanalyses_meanregionM)
-
-
-objM<-phyl.vcv(datanalyses_meanregionM,vcv(poecilids_tree_prunned),1)
-objM$R
-## correlation between x & y
-r.xy_M<-cov2cor(objM$R)
-## t-statistic & P-value
-t.xy_M<-r.xy_M*sqrt((Ntip(poecilids_tree_prunned)-2)/(1-r.xy_M^2))
-P.xy_M<-2*pt(abs(t.xy_M),df=Ntip(poecilids_tree_prunned)-2,lower.tail=F)
-P.xy_M
-
-
-# plot the correlation results
-corrplot(r.xy_M, method= "shade", type="upper",
-         outline=T, pch.col="black", diag=F, tl.col = "grey40", tl.srt=60, addCoef.col = 'white')
-title(main = "Males Phylo control")
-
-
-# females
-datanalyses_meanregionF<-brain_dataset[brain_dataset$sex=="F", colnames(brain_dataset) %in% c("TL","OT","CB","HP",
-                                                                                              "OB","DM","spp_phylo")]
-datanalyses_meanregionF<-datanalyses_meanregionF[complete.cases(datanalyses_meanregionF), ]
-str(datanalyses_meanregionF)
-
-
-objF<-phyl.vcv(datanalyses_meanregionF,vcv(poecilids_tree_prunned),1)
-objF$R
-
-## correlation between x & y
-r.xy_F<-cov2cor(objF$R)
-## t-statistic & P-value
-t.xy_F<-r.xy_F*sqrt((Ntip(poecilids_tree_prunned)-2)/(1-r.xy_F^2))
-P.xy_F<-2*pt(abs(t.xy_F),df=Ntip(poecilids_tree_prunned)-2,lower.tail=F)
-P.xy_F
-
-
-# plot the correlation results
-corrplot(r.xy_F, method= "shade", type="upper",
-         outline=T, pch.col="black", diag=F, tl.col = "grey40", tl.srt=60, addCoef.col = 'white')
-title(main = "Females Phylo control")
 
 
 
