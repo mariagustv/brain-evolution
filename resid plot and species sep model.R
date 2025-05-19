@@ -5,14 +5,8 @@
 
 #Import packages
 library(MCMCglmm)
-
 library(dplyr)
 library(ggplot2)
-sessionInfo()
-
-
-#Set working directory
-setwd("/Users/mariagustavsson/Documents/Master thesis/data analysis")
 
 
 #Import the data from previous scripts 
@@ -126,14 +120,3 @@ print(sum_table)
 
 
 
-sum_table <- df %>%
-  group_by(species, sex, origin) %>%
-  summarise(count = n(), .groups = "drop") %>%
-  arrange(species, sex, origin)
-
-print(summary_table)
-
-
-#################################################################################
-
-cor()
