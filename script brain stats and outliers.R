@@ -1,6 +1,6 @@
 ## R version 4.4.2
 ## December 2024
-## Ana Cristina R. Gomes
+## Author: Ana Cristina R. Gomes
 ##Modified by Maria Gustavsson, May 2025, (R version 4.4.3)
 
 
@@ -9,8 +9,7 @@ library(dplyr)
 library(tidyverse)
 library(ggplot2)
 
-#set working directory
-setwd("/Users/mariagustavsson/Documents/Master thesis/data analysis")
+
 #import the data
 brain_dataset<-read.table(file="brain_dataset.txt", sep="\t", header=T)
 
