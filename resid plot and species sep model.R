@@ -5,8 +5,14 @@
 
 #Import packages
 library(MCMCglmm)
+
 library(dplyr)
 library(ggplot2)
+sessionInfo()
+
+
+#Set working directory
+setwd("/Users/mariagustavsson/Documents/Master thesis/data analysis")
 
 
 #Import the data from previous scripts 
@@ -28,9 +34,15 @@ bd <- brain_data_sex %>%
 
 # For Females 
 female_data <- bd %>% filter(Sex == "F")
+
+female_data <- female_data %>% filter(V1 != "PSP")
+female_data <- female_data %>% filter(V1 != "PPR")
+
 ggplot(female_data, aes(x = V1, y = brain_tot_resid)) +
   geom_bar(stat = "identity", fill = "red") +
   labs(title = "Total Brain residuals by Species (Females)", x = "Species")
+
+
 
 # For Males
 male_data <- bd %>% filter(Sex == "M")
@@ -120,3 +132,14 @@ print(sum_table)
 
 
 
+sum_table <- df %>%
+  group_by(species, sex, origin) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  arrange(species, sex, origin)
+
+print(summary_table)
+
+
+#################################################################################
+
+cor()
